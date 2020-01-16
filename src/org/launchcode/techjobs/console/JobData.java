@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -66,6 +64,7 @@ public class JobData {
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
+        value = value.toLowerCase();
 
         // load data, if not already loaded
         loadData();
@@ -75,6 +74,7 @@ public class JobData {
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
+            aValue = aValue.toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
@@ -124,5 +124,31 @@ public class JobData {
             e.printStackTrace();
         }
     }
+    public static void findByValue(String searchTerm) {
+        searchTerm = searchTerm.toLowerCase();
+        // load data, if not already loaded
+        loadData();
+        // FIND THE ENTRIES WITH THE SEARCH TERM AND PUT THEM INTO A NEW HASHMAP CALLED JOBS
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+//        System.out.println(allJobs);
+        for (HashMap<String, String> getRows : allJobs) {
+            for (String eachValue : getRows.values()) {
+                eachValue = eachValue.toLowerCase();
+                if (eachValue.contains(searchTerm)) {
+                    jobs.add(getRows);
+                }
+            }
+        }
+        // PRINT EACH JOB INFO THAT INCLUDES THAT SEARCH TERM
+        for (int i=0; i<jobs.size(); i++) {
+            Set<Map.Entry<String, String>> allValuesList = jobs.get(i).entrySet();
+//            System.out.println(allValuesList);
+            System.out.println("\n*****");
 
+            for (Map.Entry<String, String> data : allValuesList) {
+                System.out.println(data);
+            }
+        }
+            System.out.println("*****");
+    }
 }
